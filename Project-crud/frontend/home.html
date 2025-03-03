@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestial Stay - Luxury Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes slideIn { 
+        from { opacity: 0; transform: translateY(-20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+      } 
+    
+      @keyframes pulse { 
+        0% { transform: scale(1); } 
+        50% { transform: scale(1.1); } 
+        100% { transform: scale(1); } 
+      } 
+    
+      @keyframes backgroundMove { 
+        0% { background-position: 0 0; } 
+        100% { background-position: 100% 100%; } 
+      } 
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+            font-family: 'Roboto', cursive, sans-serif; 
+            background-image: url('hotel.jpg'); 
+            background-size: cover; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            animation: backgroundMove 15s infinite linear; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #1a1a1a;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-weight: 500;
+            padding: 8px 15px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #f4f4f4;
+            color: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        .auth-buttons a {
+            padding: 8px 15px;
+            margin-left: 10px;
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .auth-buttons a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hotel-hero.jpg') no-repeat center/cover;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-group a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-group a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 20px;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .features .feature {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .features .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .features img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10px;
+        }
+
+        .features h4 {
+            font-size: 1.5em;
+            margin: 15px 0;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 50px 20px;
+            text-align: center;
+            background-color: #3498db;
+            color: white;
+        }
+
+        .testimonials h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .testimonial {
+            background-color: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            font-size: 0.9em;
+        }
+
+        /* Offers Section */
+        .offers {
+            padding: 50px 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .offers h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .about-us {
+            padding: 20px;
+            background-color: #3498db;
+            color: white;
+        }
+
+        .offer-card {
+            margin: 10px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .features, .testimonial-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Content is included here -->
+    <!-- Your HTML code above -->
+
+</body>
+</html>
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="booking.html">Booking Tiket</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="users.html">Users</a></li>
+            <li><a href="facilities.html">Facilities</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>Welcome to Celestial Stay</h1>
+            <p>Your gateway to luxurious relaxation and unforgettable experiences</p>
+            <div class="btn-group">
+                <a href="rooms.html">Explore Rooms</a>
+                <a href="offers.html">View Special Offers</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature">
+            <img src="spa.jpg" alt="Spa">
+            <h4>Relaxing Spa</h4>
+            <p>Indulge in a soothing spa experience for ultimate relaxation.</p>
+        </div>
+        <div class="feature">
+            <img src="restaurant.jpg" alt="Restaurant">
+            <h4>Gourmet Dining</h4>
+            <p>Enjoy exquisite cuisine at our world-class restaurant.</p>
+        </div>
+        <div class="feature">
+            <img src="gym.jpg" alt="Gym">
+            <h4>Modern Gym</h4>
+            <p>Stay fit and healthy with our fully-equipped gym.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Our Guests Say</h2>
+        <div class="testimonial-cards">
+            <div class="testimonial">
+                <p>"The best hotel experience I’ve ever had! Wonderful staff, excellent amenities."</p>
+                <h4>John Doe</h4>
+            </div>
+            <div class="testimonial">
+                <p>"Celestial Stay made my vacation unforgettable! Great location and service."</p>
+                <h4>Jane Smith</h4>
+            </div>
+            <div class="testimonial">
+                <p>"Amazing atmosphere and comfortable rooms. Will definitely return!"</p>
+                <h4>Michael Brown</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers Section -->
+    <section class="offers">
+        <h2>Exclusive Offers</h2>
+        <div class="offer-card">
+            <h3>Winter Special</h3>
+            <p>Book now and get 20% off on all rooms this winter!</p>
+        </div>
+        <div class="offer-card">
+            <h3>Weekend Getaway</h3>
+            <p>Enjoy a weekend stay with complimentary breakfast for two!</p>
+        </div>
+        <div class="offer-card">
+            <h3>Family Package</h3>
+            <p>Special rates for family bookings with kids stay free!</p>
+        </div>
+    </section>
+
+      <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Celestial Stay Hotel. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

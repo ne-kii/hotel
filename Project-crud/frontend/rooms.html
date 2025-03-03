@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Celestial Hotel - Rooms</title>
+    <style> 
+        @keyframes slideIn { 
+          from { opacity: 0; transform: translateY(-20px); } 
+          to { opacity: 1; transform: translateY(0); } 
+        } 
+      
+        @keyframes pulse { 
+          0% { transform: scale(1); } 
+          50% { transform: scale(1.1); } 
+          100% { transform: scale(1); } 
+        } 
+      
+        @keyframes backgroundMove { 
+          0% { background-position: 0 0; } 
+          100% { background-position: 100% 100%; } 
+        } 
+      
+        body {
+            color: #333;
+            line-height: 1.6;
+            font-family: 'Roboto', cursive, sans-serif; 
+            background-image: url('hotel.jpg'); 
+            background-size: cover; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            animation: backgroundMove 15s infinite linear; 
+            margin: 0; 
+            padding: 0; 
+        } 
+      
+        nav { 
+          background-color: rgba(51, 51, 51, 0.8); 
+          color: #fff; 
+          padding: 15px; 
+          display: flex; 
+          justify-content: space-between; 
+          align-items: center; 
+          animation: slideIn 1s ease-in-out; 
+        } 
+      
+        nav .logo { 
+          font-size: 1.5em;  
+        } 
+      
+        nav ul { 
+          list-style: none; 
+          padding: 0; 
+          margin: 0; 
+          display: flex; 
+        } 
+      
+        nav ul li { 
+          margin: 0 10px; 
+        } 
+      
+        nav ul li a { 
+          color: #fff; 
+          text-decoration: none; 
+          padding: 10px 15px; 
+          display: block; 
+          transition: background-color 0.3s; 
+        } 
+      
+        nav ul li a:hover { 
+          background-color: #575757; 
+        } 
+      
+        h1 { 
+          text-align: center; 
+          margin-top: 20px; 
+          color: #fff; 
+          animation: slideIn 1s ease-in-out; 
+        } 
+      
+        form { 
+          max-width: 500px; 
+          margin: 20px auto; 
+          padding: 20px; 
+          background: rgba(255, 255, 255, 0.9); 
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+          animation: slideIn 1s ease-in-out; 
+        } 
+      
+        input, button { 
+          width: 100%; 
+          padding: 10px; 
+          margin: 10px 0; 
+          border: 1px solid #ccc; 
+          font-family: 'Comic Sans MS', cursive, sans-serif; 
+          transition: box-shadow 0.3s; 
+        } 
+      
+        button[type="submit"] { 
+          background-color: #007BFF; 
+          color: #fff; 
+          border: none; 
+          cursor: pointer;  
+        } 
+      
+        button[type="submit"]:hover { 
+          background-color: #0056b3; 
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        } 
+      
+        table { 
+          width: 80%; 
+          margin: 20px auto; 
+          border-collapse: collapse; 
+          background: rgba(255, 255, 255, 0.9); 
+          animation: slideIn 1s ease-in-out; 
+        } 
+      
+        table, th, td { 
+          border: 1px solid #ddd; 
+        } 
+      
+        th, td { 
+          padding: 12px; 
+          text-align: left; 
+        } 
+      
+        th { 
+          background-color: #007BFF; 
+          color: white; 
+        } 
+      
+        tbody tr:nth-child(even) { 
+          background-color: #f2f2f2; 
+        } 
+      </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Celestial Hotel</div>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="booking.html">Booking Tiket</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="users.html">Users</a></li>
+            <li><a href="facilities.html">Facilities</a></li>
+            <li><a href="logout.html">Logout</a></li>
+            
+
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Room Management</h1>
+
+        <form id="roomForm">
+            <input type="hidden" id="roomId">
+            <input type="text" id="type" placeholder="Room Type" required>
+            <input type="number" id="price" placeholder="Room Price" required>
+            <input type="text" id="status" placeholder="Room Status" required>
+            <span class="error" id="formError"></span>
+            <button type="submit">Save</button>
+            <button type="button" id="cancelUpdate" style="display: none;">Cancel</button>
+        </form>
+
+        <div id="loader">Loading...</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="roomsTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api/rooms";
+        const roomForm = document.getElementById("roomForm");
+        const roomsTableBody = document.getElementById("roomsTableBody");
+        const cancelUpdateButton = document.getElementById("cancelUpdate");
+        const loader = document.getElementById("loader");
+        const formError = document.getElementById("formError");
+
+        function resetForm() {
+            document.getElementById("roomId").value = "";
+            document.getElementById("type").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("status").value = "";
+            cancelUpdateButton.style.display = "none";
+            formError.textContent = "";
+        }
+
+        function showLoader(show) {
+            loader.style.display = show ? "block" : "none";
+        }
+
+        async function fetchRooms() {
+            showLoader(true);
+            try {
+                const res = await fetch(API_URL);
+                if (!res.ok) throw new Error("Failed to fetch rooms");
+                const rooms = await res.json();
+                roomsTableBody.innerHTML = rooms.map(room => `
+                    <tr>
+                        <td>${room.id}</td>
+                        <td>${room.type}</td>
+                        <td>${room.price}</td>
+                        <td>${room.status}</td>
+                        <td>
+                            <button onclick="editRoom(${room.id}, '${room.type}', ${room.price}, '${room.status}')">Edit</button>
+                            <button onclick="deleteRoom(${room.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+                alert("Error fetching rooms. Please try again.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        async function deleteRoom(id) {
+            if (confirm("Are you sure you want to delete this room?")) {
+                showLoader(true);
+                try {
+                    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+                    if (!res.ok) throw new Error("Failed to delete room");
+                    fetchRooms();
+                } catch (error) {
+                    console.error(error);
+                    alert("Error deleting room. Please try again.");
+                } finally {
+                    showLoader(false);
+                }
+            }
+        }
+
+        function editRoom(id, type, price, status) {
+            document.getElementById("roomId").value = id;
+            document.getElementById("type").value = type;
+            document.getElementById("price").value = price;
+            document.getElementById("status").value = status;
+            cancelUpdateButton.style.display = "inline";
+        }
+
+        cancelUpdateButton.addEventListener("click", resetForm);
+
+        roomForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const roomId = document.getElementById("roomId").value;
+            const type = document.getElementById("type").value;
+            const price = document.getElementById("price").value;
+            const status = document.getElementById("status").value;
+
+            if (!type || !price || !status) {
+                formError.textContent = "All fields are required.";
+                return;
+            }
+
+            const roomData = { type, price, status };
+            showLoader(true);
+
+            try {
+    const res = await fetch(roomId ? `${API_URL}/${roomId}` : API_URL, {
+        method: roomId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(roomData),
+    });
+    const result = await res.json();
+    console.log("API Response:", result);
+
+    if (!res.ok) throw new Error(result.message || "Failed to save room");
+    resetForm();
+    fetchRooms();
+} catch (error) {
+    console.error("Error Details:", error);
+    alert(error.message || "Error saving room. Please try again.");
+}
+
+        });
+
+        fetchRooms();
+    </script>
+</body>
+</html>

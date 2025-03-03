@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Celestial Hotel</title>
+    <style>
+        @keyframes slideIn { 
+        from { opacity: 0; transform: translateY(-20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+      } 
+    
+      @keyframes pulse { 
+        0% { transform: scale(1); } 
+        50% { transform: scale(1.1); } 
+        100% { transform: scale(1); } 
+      } 
+    
+      @keyframes backgroundMove { 
+        0% { background-position: 0 0; } 
+        100% { background-position: 100% 100%; } 
+      } 
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('hotel.jpg'); 
+            background-size: cover; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            animation: backgroundMove 15s infinite linear;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.4em;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input {
+            margin: 12px 0;
+            padding: 12px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .message.success {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .message.error {
+            background-color: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Celestial Hotel</h1>
+
+    <form id="userForm">
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <button type="submit">Login</button>
+        <p>Already have an account? <a href="regsisterpage.html">Register</a></p>
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <script>
+        const fakeUser = {
+            email: "user@example.com",
+            password: "password123"
+        };
+
+        const form = document.getElementById('userForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const messageBox = document.getElementById('message');
+
+        // Autofill email and password from registration
+        window.addEventListener('DOMContentLoaded', () => {
+            emailInput.value = localStorage.getItem('autofillEmail') || '';
+            passwordInput.value = localStorage.getItem('autofillPassword') || '';
+            localStorage.removeItem('autofillEmail');
+            localStorage.removeItem('autofillPassword');
+        });
+
+        function showMessage(message, isSuccess = true) {
+            messageBox.textContent = message;
+            messageBox.className = `message ${isSuccess ? 'success' : 'error'}`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const matchedUser = users.find(user => user.email === email && user.password === password);
+
+            if (matchedUser || (email === fakeUser.email && password === fakeUser.password)) {
+                showMessage('Login successful! Redirecting...', true);
+                localStorage.setItem('user', JSON.stringify({ email }));
+                setTimeout(() => {
+                    window.location.href = 'home.html'; // Redirect to dashboard
+                }, 2000);
+            } else {
+                showMessage('Invalid email or password. Please try again.', false);
+            }
+        });
+    </script>
+
+</body>
+</html>

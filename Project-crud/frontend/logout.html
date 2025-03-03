@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - Celestial Stay</title>
+    <style>
+        @keyframes slideIn { 
+        from { opacity: 0; transform: translateY(-20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+      } 
+    
+      @keyframes pulse { 
+        0% { transform: scale(1); } 
+        50% { transform: scale(1.1); } 
+        100% { transform: scale(1); } 
+      } 
+    
+      @keyframes backgroundMove { 
+        0% { background-position: 0 0; } 
+        100% { background-position: 100% 100%; } 
+      }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('hotel.jpg'); 
+            background-size: cover; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            animation: backgroundMove 15s infinite linear;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.4em;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>You have been logged out</h1>
+    <p>Thank you for visiting Celestial Stay. You have successfully logged out.</p>
+    
+    <button onclick="logout()">Go to Login Page</button>
+
+    <script>
+        function logout() {
+            // Menghapus data yang disimpan di localStorage
+            localStorage.removeItem('users');
+            localStorage.removeItem('autofillEmail');
+            localStorage.removeItem('autofillPassword');
+            
+            // Redirect pengguna ke halaman login setelah logout
+            window.location.href = 'loginpage.html';
+        }
+    </script>
+
+</body>
+</html>
